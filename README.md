@@ -2,21 +2,21 @@
 Music Platform
 
 
-## 
+## Own By
 
 BoRen Chen 
 Sean Holahan
 
 ## Starting-Up-Locally
-###BackEnd
-####node app.js
+### BackEnd
+#### node app.js
 P.S. Make sure you install the depenencies with 
 $ npm install
 
 
-###FrontEnd
-####cd socket-io-client
-####npm start
+### FrontEnd
+#### cd socket-io-client
+#### npm start
 P.S. Make sure you install the depenencies with 
 $ npm install
 
@@ -24,9 +24,9 @@ $ npm install
 
 ## Setting-Up
 
-###On Mac OS
+### On Mac OS
 
-####Setting Up Express, Socket, Nodejs
+#### Setting Up Express, Socket, Nodejs
 
 
 Pre-requests
