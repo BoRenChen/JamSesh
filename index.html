@@ -48,55 +48,70 @@ using <a href="https://tonejs.github.io/docs/#Player">Tone.Player</a>.
   <button id="B4">B4</button>
 </div>
 
-<script>
-var synth = new Tone.AMSynth().toMaster()
 
-//attach a listener to all of the buttons
-document.querySelectorAll('button').forEach(function(button){
-	button.addEventListener('mousedown', function(e){
-		//play the note on mouse down
-		synth.triggerAttack(e.target.textContent)
-    console.log(e.target.textContent)
-    socket.broadcast.emit(e.target.textContent)
-	})
-	button.addEventListener('mouseup', function(e){
-		//release on mouseup
-		synth.triggerRelease()
-	})
-})
-</script>
-
-         <script src="/jquery/dist/jquery.js"></script>
-
-
-        <!--Socket Connection-->
+         <script src="/jquery/dist/jquery.js"></script>    
+         <!--Socket Connection-->
         <!-- <script src="https://unpkg.com/react@15.6.1/dist/react.js"></script>
         <script src="https://unpkg.com/react-dom@15.6.1/dist/react-dom.js"></script>
         <script src="https://fb.me/react-15.1.0.js"></script>
         <script src="https://fb.me/react-dom-15.1.0.js"></script> -->
-        <script>
+
+<script>
+    var synth = new Tone.AMSynth().toMaster()
+
+    //attach a listener to all of the buttons
+    document.querySelectorAll('button').forEach(function(button){
+    	button.addEventListener('mousedown', function(e){
+    		//play the note on mouse down
+    		synth.triggerAttack(e.target.textContent)
+        console.log(e.target.textContent)
+        
+    	})
+    	button.addEventListener('mouseup', function(e){
+    		//release on mouseup
+    		synth.triggerRelease()
+    	})
+    })
+
+
+
+    //Socket
+
          var socket = io.connect('http://localhost:4200');
-         socket.on('connect', function(data) {
-            socket.emit('join', 'Hello World from client');
-         });
+     socket.on('connect', function(data) {
+        socket.emit('join', 'Hello World from client');
+     });
 
-         socket.on('welcomeMsg', function(data) {
-            console.log(data);
-            });
+     socket.on('welcomeMsg', function(data) {
+        console.log(data);
+        });
 
-          socket.on('broad', function(data) {
-         $('#future').append(data+ "<br/>");
-         $('#future').append(synth.triggerAttack(e.target.textContent));
+      socket.on('broad', function(data) {
+     $('#future').append(data+ "<br/>");
+     $('#future').append(synth.triggerAttack(e.target.textContent));
 
 
-           });
+       });
+     socket.on('press', function(data) {
+        console.log(data);
+        synth.triggerAttack('C4')
+      });
 
-         $('form').submit(function(e){
-             e.preventDefault();
-             var message = $('#chat_input').val();
-             socket.emit('messages', message);
 
-         });
+     //Jquery Dom element
+
+     $('form').submit(function(e){
+         e.preventDefault();
+         var message = $('#chat_input').val();
+         socket.emit('messages', message);
+
+     });
+
+
+     $('#C4').click(function(e){
+        var msg = "C4 Pressed"
+        socket.emit('buttonPressed', msg);
+     });
 
 
 

@@ -3,7 +3,6 @@ var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io')(server);
-var tone = require(["Tone"];
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/Tone'));
@@ -24,15 +23,14 @@ io.on('connection', function(client) {
            client.emit('broad', data);
            client.broadcast.emit('broad',data);
     });
+    client.on('buttonPressed', function(data) {
+        console.log("server" + data);
+        client.broadcast.emit('press', data);
+    });
 
 
 });
 
-const element = <h1>Hello, world</h1>;
-ReactDOM.render(
-  element,
-  document.getElementById('root')
-);
 server.listen(4200);
 
 
