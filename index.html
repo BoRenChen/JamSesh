@@ -1,39 +1,110 @@
-<!doctype html>  
-<html lang="en">  
+<!DOCTYPE html>
+<html lang="en">
     <head>
+      <!-- <script type="text/javascript" src="./p5.js"></script>
+<script type="text/javascript" src="Tone.min.js"></script> -->
+      <script src="/socket.io/socket.io.js"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
+-->
+
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+
+
+
+
 
     </head>
     <body>
-        <h1>Hello World!</h1>
+      <div id="root"></div>
+        <h1>JamSesh</h1>
+        <div class="container">
+          <div id="container" class="col-md-8 col-md-offset-2"></div>
+        </div>
+
         <div id="future"></div>
         <form id="form" id="chat_form">
             <input id="chat_input" type="text">
             <input type="submit" value="Send">
         </form>
-         <script src="/jquery/dist/jquery.js"></script>
-        <script src="/socket.io/socket.io.js"></script>
-        <!--Socket Connection-->
+        <Button
+  onPress={onPressLearnMore}
+  title="Learn More"
+  color="#841584"
+  accessibilityLabel="Learn more about this purple button"/>
 
-        <script>  
+  <div id="Content">
+<div id="Title">Grains</div>
+<div id="Explanation">
+Click on the button to play the audio file on loop
+using <a href="https://tonejs.github.io/docs/#Player">Tone.Player</a>.
+</div>
+</div>
+
+<div id="content">
+  <button id="C4">C4</button>
+  <button id="E4">E4</button>
+  <button id="G4">G4</button>
+  <button id="B4">B4</button>
+</div>
+
+<script>
+var synth = new Tone.AMSynth().toMaster()
+
+//attach a listener to all of the buttons
+document.querySelectorAll('button').forEach(function(button){
+	button.addEventListener('mousedown', function(e){
+		//play the note on mouse down
+		synth.triggerAttack(e.target.textContent)
+    console.log(e.target.textContent)
+    socket.broadcast.emit(e.target.textContent)
+	})
+	button.addEventListener('mouseup', function(e){
+		//release on mouseup
+		synth.triggerRelease()
+	})
+})
+</script>
+
+         <script src="/jquery/dist/jquery.js"></script>
+
+
+        <!--Socket Connection-->
+        <!-- <script src="https://unpkg.com/react@15.6.1/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15.6.1/dist/react-dom.js"></script>
+        <script src="https://fb.me/react-15.1.0.js"></script>
+        <script src="https://fb.me/react-dom-15.1.0.js"></script> -->
+        <script>
          var socket = io.connect('http://localhost:4200');
          socket.on('connect', function(data) {
             socket.emit('join', 'Hello World from client');
          });
+
          socket.on('welcomeMsg', function(data) {
             console.log(data);
             });
+
           socket.on('broad', function(data) {
          $('#future').append(data+ "<br/>");
+         $('#future').append(synth.triggerAttack(e.target.textContent));
+
+
            });
 
          $('form').submit(function(e){
              e.preventDefault();
              var message = $('#chat_input').val();
              socket.emit('messages', message);
+
          });
 
 
-        </script>  
+
+
+
+</script>
+
+
 
     </body>
-</html> 
+</html>

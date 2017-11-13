@@ -1,17 +1,19 @@
 // app.js
-var express = require('express');  
-var app = express();  
-var server = require('http').createServer(app);  
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
 var io = require('socket.io')(server);
+var tone = require(["Tone"];
 
-app.use(express.static(__dirname + '/node_modules'));  
-app.get('/', function(req, res,next) {  
+app.use(express.static(__dirname + '/node_modules'));
+app.use(express.static(__dirname + '/Tone'));
+app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/index.html');
 });
 
 
 //Socket Listener
-io.on('connection', function(client) {  
+io.on('connection', function(client) {
     console.log('Client connected...');
 
     client.on('join', function(data) {
@@ -26,7 +28,12 @@ io.on('connection', function(client) {
 
 });
 
-server.listen(4200);  
+const element = <h1>Hello, world</h1>;
+ReactDOM.render(
+  element,
+  document.getElementById('root')
+);
+server.listen(4200);
 
 
 /*
