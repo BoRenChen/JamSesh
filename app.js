@@ -27,6 +27,9 @@ io.on('connection', function(client) {
         console.log("server" + data);
         client.broadcast.emit('press', data);
     });
+    client.on('buttonReleased', function(data){
+      client.broadcast.emit('release', data);
+    })
 
 
 });
