@@ -24,10 +24,11 @@ io.on('connection', function(client) {
            client.broadcast.emit('broad',data);
     });
     client.on('buttonPressed', function(data) {
-        console.log("server" + data);
+        console.log("server pressed" + data);
         client.broadcast.emit('press', data);
     });
     client.on('buttonReleased', function(data){
+        console.log("server released" + data);
       client.broadcast.emit('release', data);
     })
 
