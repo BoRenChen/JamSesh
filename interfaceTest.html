@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <!-- <script type="text/javascript" src="./p5.js"></script>
+<script type="text/javascript" src="Tone.min.js"></script> -->
+      <!-- <script src="/socket.io/socket.io.js"></script> -->
+      <script src="./socket-io-client/src/interface/interface.min.js"></script>
+      <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.16/p5.js"></script>
+-->
+
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tone/0.12.10/Tone.min.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.5/require.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    </head>
+    <body>
+      <script>
+      panel = new Interface.Panel()
+
+      // place your script here; below is for demo only
+      btn = new Interface.Button({ bounds:[0,0,1,1], label:'test' })
+
+      panel.add( btn )
+      </script>
+    </body>
+
+
+    <!-- <body>
+      <div id='buttonPanel'></div>
+
+
+
+
+         <!--Socket Connection-->
+        <!-- <script src="https://unpkg.com/react@15.6.1/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15.6.1/dist/react-dom.js"></script>
+        <script src="https://fb.me/react-15.1.0.js"></script>
+        <script src="https://fb.me/react-dom-15.1.0.js"></script> -->
+
+        <script>
+
+        var a = new Interface.Panel({
+  container:document.querySelector("#buttonPanel")
+});
+
+var b = new Interface.Button({
+  bounds:[.05,.05,.3,.9],
+  label:'toggle'
+});
+var c = new Interface.Button({
+  bounds:[.35,.05,.3,.9],
+  label:'momentary',
+  mode:'momentary'
+});
+var d = new Interface.Button({
+  bounds:[.65,.05,.3,.9],
+  label:'contact',
+   mode:'contact'
+});
+
+a.background = 'black';
+a.add(b,c,d);
+
+        </script>
+
+
+
+    </body> -->
+</html>

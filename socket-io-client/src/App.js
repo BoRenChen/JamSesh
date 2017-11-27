@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Tone from "tone";
-import $ from "jquery"
+import $ from "jquery";
+//import Zepto from './zepto.min.js'
+import Interface from './interface.js';
 
 class App extends Component {
 
@@ -15,6 +17,7 @@ class App extends Component {
 
   componentDidMount() {
 
+    //  var Interface = require('./interface.js')
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
 
@@ -78,6 +81,16 @@ class App extends Component {
 
     var synth = new Tone.Synth().toMaster();
 
+//     panel = new Interface.Panel()
+//
+//   // place your script here; below is for demo only
+//   btn = new Interface.Button({
+// bounds:[.05,.05,.3,.9],
+// label:'toggle'
+// });
+//
+//   panel.add( btn )
+
 
     //attach a listener to all of the buttons
     document.querySelectorAll('button').forEach(function(button){
@@ -85,7 +98,7 @@ class App extends Component {
         //play the note on mouse down
         synth.triggerAttack(e.target.textContent)
         console.log("from local" + e.target.textContent)
-        
+
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
@@ -101,11 +114,16 @@ class App extends Component {
         <h1>Socket Test</h1>
 
     <div id="content">
-      <button id="C4">C4</button>
+      <button id="C4">C45</button>
       <button id="E4">E4</button>
       <button id="G4">G4</button>
       <button id="B4">B4</button>
+      <div id="#buttonPanel"></div>
+
+
     </div>
+
+
 
       </div>
     );
