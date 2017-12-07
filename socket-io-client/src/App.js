@@ -5,6 +5,8 @@ import $ from "jquery";
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './sketch';
 import sketch2 from './sketch2';
+import './App.css';
+
 
 
 class App extends Component {
@@ -47,7 +49,7 @@ class App extends Component {
         socket.emit('buttonPressed', msg);
      });
 
-     $('#C4').mouseup(function(e){
+     $('#C4').click(function(e){
         var msg = "C4"
         socket.emit('buttonReleased', msg);
      });
@@ -87,7 +89,7 @@ class App extends Component {
 
 
     //attach a listener to all of the buttons
-    document.querySelectorAll('button').forEach(function(button){
+    document.querySelectorAll('li').forEach(function(button){
       button.addEventListener('mousedown', function(e){
         //play the note on mouse down
         synth.triggerAttack(e.target.textContent)
@@ -104,15 +106,32 @@ class App extends Component {
     render() {
     return (
       <div className="component-app">
+
+      <ul className="set">
+      <li className="white b" id="C4">C4</li>
+      <li className="black as"></li>
+      <li className="white a" id="A4">A4</li>
+      <li className="black gs"></li>
+      <li className="white g" id="G4">G4</li>
+      <li className="black fs"></li>
+      <li className="white f" id="F4">F4</li>
+      <li className="white e" id="E4">E4</li>
+      <li className="black ds"></li>
+      <li className="white d" id="D4">D4</li>
+      <li className="black cs"></li>
+      <li className="white c" id="C5">C5</li>
+    </ul>
+    <input type="range" min="-10" max="10"/>
+
+
         <h1>Socket Test</h1>
     <div id="content">
-      <button id="C4">C4</button>
-      <button id="E4">E4</button>
-      <button id="G4">G4</button>
-      <button id="B4">B4</button>
+      <button >C4</button>
+      <button >E4</button>
+      <button >G4</button>
+      <button >B4</button>
     </div>
 
-    
     <P5Wrapper sketch={sketch} />
 
 
