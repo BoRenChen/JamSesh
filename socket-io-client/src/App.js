@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Tone from "tone";
-import $ from "jquery"
+import $ from "jquery"; 
+import P5Wrapper from 'react-p5-wrapper';
+import sketch from './sketch';
+import sketch2 from './sketch2';
+
 
 class App extends Component {
 
@@ -18,7 +22,8 @@ class App extends Component {
     const { endpoint } = this.state;
     const socket = socketIOClient(endpoint);
 
-     socket.on('connect', function(data) {
+    //SOCKET CONNECTION
+    socket.on('connect', function(data) {
         socket.emit('join', 'Hello Welcome to JamSesh - from client');
      });
 
@@ -31,6 +36,8 @@ class App extends Component {
       console.log("release" + data)
         synth.triggerRelease();
      })
+
+
 
 
     //JQUERY COMPONENT
@@ -94,18 +101,20 @@ class App extends Component {
     })
 
   }
-
     render() {
     return (
       <div className="component-app">
         <h1>Socket Test</h1>
-
     <div id="content">
       <button id="C4">C4</button>
       <button id="E4">E4</button>
       <button id="G4">G4</button>
       <button id="B4">B4</button>
     </div>
+
+    
+    <P5Wrapper sketch={sketch} />
+
 
       </div>
     );

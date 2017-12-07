@@ -30,7 +30,11 @@ io.on('connection', function(client) {
     client.on('buttonReleased', function(data){
         console.log("server released" + data);
       client.broadcast.emit('release', data);
-    })
+    });
+    client.on('disconnect', function () {
+    console.log('Client disconnected...');
+      client.emit('disconnected');
+    });
 
 
 });
