@@ -43,13 +43,13 @@ class App extends Component {
 
 
     //JQUERY COMPONENT
-
+/*
      $('#C4').mousedown(function(e){
         var msg = "C4"
         socket.emit('buttonPressed', msg);
      });
 
-     $('#C4').click(function(e){
+     $('#C4').mouseup(function(e){
         var msg = "C4"
         socket.emit('buttonReleased', msg);
      });
@@ -84,7 +84,7 @@ class App extends Component {
         socket.emit('buttonReleased', msg);
      });
 
-
+*/
     var synth = new Tone.Synth().toMaster();
 
 
@@ -93,12 +93,17 @@ class App extends Component {
       button.addEventListener('mousedown', function(e){
         //play the note on mouse down
         synth.triggerAttack(e.target.textContent)
+        //Play sound base on content of the li
+        socket.emit('buttonPressed', e.target.textContent);
+
         console.log("from local" + e.target.textContent)
         
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
         synth.triggerRelease()
+        //Release sound base on content of the li.
+        socket.emit('buttonReleased', e.target.textContent);
       })
     })
 
@@ -108,7 +113,7 @@ class App extends Component {
       <div className="component-app">
 
       <ul className="set">
-      <li className="white b" id="C4">C4</li>
+      <li className="white b" id="B4">B4</li>
       <li className="black as"></li>
       <li className="white a" id="A4">A4</li>
       <li className="black gs"></li>
@@ -119,7 +124,7 @@ class App extends Component {
       <li className="black ds"></li>
       <li className="white d" id="D4">D4</li>
       <li className="black cs"></li>
-      <li className="white c" id="C5">C5</li>
+      <li className="white c" id="C4">C4</li>
     </ul>
     <input type="range" min="-10" max="10"/>
 
