@@ -32,12 +32,12 @@ class App extends Component {
 
     socket.on("press", function(data){
       console.log(data);
-      synth.triggerAttack(data);
+      synth2.triggerAttack(data);
     });
 
     socket.on('release', function(data){
       console.log("release" + data)
-        synth.triggerRelease();
+        synth2.triggerRelease(data);
      })
 
 
@@ -85,7 +85,65 @@ class App extends Component {
         socket.emit('buttonReleased', msg);
      });
 
+
+
+
+
+
 */
+
+
+
+'use strict';
+
+var octave = 4;
+
+var keys = [];
+var prevKey = 0;
+
+var Instruments = {
+  // https://github.com/stuartmemo/qwerty-hancock
+  keyboard: {
+    // Lower octave.
+    a: 'Cl',
+    w: 'C#l',
+    s: 'Dl',
+    e: 'D#l',
+    d: 'El',
+    f: 'Fl',
+    t: 'F#l',
+    g: 'Gl',
+    y: 'G#l',
+    h: 'Al',
+    u: 'A#l',
+    j: 'Bl',
+    // Upper octave.
+    k: 'Cu',
+    o: 'C#u',
+    l: 'Du',
+    p: 'D#u',
+    ';': 'Eu',
+    "'": 'Fu',
+    ']': 'F#u',
+    '\\': 'Gu'
+  }
+};
+
+var instrument = Instruments.keyboard;
+
+
+var keyToNote = function keyToNote(key) {
+  var note = instrument[key];
+  if (!note) {
+    return;
+  }
+
+  return Tone.Frequency(note.replace('l', octave).replace('u', octave + 1)).toNote();
+};
+
+
+
+
     var synth2 = new Tone.PolySynth(6, Tone.Synth, {
 			"oscillator" : {
 				"partials" : [0, 2, 3, 4],
@@ -117,10 +175,12 @@ class App extends Component {
 document.addEventListener('keydown', (event) => {
 const keyName = event.key;
  //synth2.triggerAttack("B4");
+console.log(keyToNote(keyName), "keytonote");
 
- synth2.triggerAttack(keyName+4)
+ synth2.triggerAttack(keyToNote(keyName));
+ socket.emit('buttonPressed', keyToNote(keyName));
   //synth2.triggerAttack(keyName.concat(4))
-  console.log(keyName.concat(4));
+
   console.log(keyName+4);
  // if (keyName == 'f') {
  //   synth2.triggerAttack("C4");
@@ -136,11 +196,11 @@ const keyName = event.key;
 });
 
 document.addEventListener('keyup', (event) => {
-  synth2.triggerRelease(event.key+4)
+  synth2.triggerRelease(keyToNote(event.key))
   //Release sound base on content of the li.
-  socket.emit('buttonReleased', "B4");
+  socket.emit('buttonReleased', keyToNote(event.key));
 
-console.log("up! ");
+console.log("up! ", event.key+4);
 });
 
 
