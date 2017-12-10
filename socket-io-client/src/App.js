@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
 import Tone from "tone";
-import $ from "jquery"; 
+import $ from "jquery";
 import P5Wrapper from 'react-p5-wrapper';
 import sketch from './sketch';
 import sketch2 from './sketch2';
 import './App.css';
+//import Interface from './interface.js'
 
 
 
@@ -85,7 +86,62 @@ class App extends Component {
      });
 
 */
-    var synth = new Tone.Synth().toMaster();
+    var synth2 = new Tone.PolySynth(6, Tone.Synth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).toMaster();
+    var synth3 = new Tone.Synth().toMaster();
+    var synth = new Tone.Synth({
+	"oscillator" : {
+		"type" : "pwm",
+		"modulationFrequency" : 0.2
+	},
+	"envelope" : {
+		"attack" : 0.02,
+		"decay" : 0.1,
+		"sustain" : 0.2,
+		"release" : 0.9,
+	}
+}).toMaster();
+     //var code = $.ui.keyCode;
+
+    document.addEventListener('keypress', (event) => {
+  const keyName = event.key;
+
+  console.log("hey! ", keyName);
+});
+
+//var keyboard = Interface.Keyboard();
+
+document.addEventListener('keydown', (event) => {
+const keyName = event.key;
+ //synth2.triggerAttack("B4");
+
+ synth2.triggerAttack(keyName+4)
+  //synth2.triggerAttack(keyName.concat(4))
+  console.log(keyName.concat(4));
+  console.log(keyName+4);
+ // if (keyName == 'f') {
+ //   synth2.triggerAttack("C4");
+ // }
+ // if (keyName == 'd') {
+ //   synth2.triggerAttack("D");
+ // }
+
+
+
+//socket.emit('buttonPressed', "B4");
+
+});
+
+document.addEventListener('keyup', (event) => {
+  synth2.triggerRelease(event.key+4)
+  //Release sound base on content of the li.
+  socket.emit('buttonReleased', "B4");
+
+console.log("up! ");
+});
 
 
     //attach a listener to all of the buttons
@@ -97,7 +153,7 @@ class App extends Component {
         socket.emit('buttonPressed', e.target.textContent);
 
         console.log("from local" + e.target.textContent)
-        
+
       })
       button.addEventListener('mouseup', function(e){
         //release on mouseup
