@@ -43,54 +43,57 @@ class App extends Component {
 
 
 
-    //JQUERY COMPONENT
-/*
-     $('#C4').mousedown(function(e){
-        var msg = "C4"
-        socket.emit('buttonPressed', msg);
-     });
+var pattern = ["", "A4", "A#4", "D5", "F5", "", "","", "", "A4", "A#4", "D5", "E5", "", "",""];
+var pattern2 = ["", "", "", "", "", "", "", "", "1", "1", "", "", "", "", "", ""];
+var synth4;
 
-     $('#C4').mouseup(function(e){
-        var msg = "C4"
-        socket.emit('buttonReleased', msg);
-     });
 
-     $('#E4').mousedown(function(e){
-        var msg = "E4"
-        socket.emit('buttonPressed', msg);
-     });
+function createSynthWithEffects()  {
+  let vol = new Tone.Volume(2).toMaster();
 
-     $('#E4').mouseup(function(e){
-        var msg = "E4"
-        socket.emit('buttonReleased', msg);
-     });
+  let reverb = new Tone.Freeverb(0.0).connect(vol);
+  reverb.wet.value = 0.1;
 
-     $('#G4').mousedown(function(e){
-        var msg = "G4"
-        socket.emit('buttonPressed', msg);
-     });
+  let delay = new Tone.FeedbackDelay(0.0, 0.0).connect(reverb);
+  delay.wet.value = 0.1;
 
-     $('#G4').mouseup(function(e){
-        var msg = "G4"
-        socket.emit('buttonReleased', msg);
-     });
+  let vibrato = new Tone.Vibrato(0, 0.2).connect(delay);
 
-     $('#B4').mousedown(function(e){
-        var msg = "B4"
-        socket.emit('buttonPressed', msg);
-     });
-
-     $('#B4').mouseup(function(e){
-        var msg = "B4"
-        socket.emit('buttonReleased', msg);
-     });
+  let polySynth = new Tone.PolySynth(3, Tone.DuoSynth, {
+    "oscillator": {
+      "type": "sine"
+    },
+    "envelope": {
+      "attack": 0.01,
+      "decay": 0.1,
+      "sustain": 0.2,
+      "release": 4,
+    }
+  });
 
 
 
 
+  return polySynth.connect(vibrato);
+}
+
+function playNote(time, note) {
+  if (note != "") {
+    synth4.triggerAttackRelease(note, "16n");
+  }
+}
+
+synth4 = createSynthWithEffects();
+
+Tone.Transport.bpm.value = 80;
+Tone.Transport.start();
+
+var seq = new Tone.Sequence(playNote, pattern, "8n");
+
+seq.start();
 
 
-*/
+
 
 
 
@@ -144,11 +147,35 @@ var keyToNote = function keyToNote(key) {
 
 
 
+var synth = new Tone.PolySynth(3, Tone.Synth, {
+			"oscillator" : {
+				"type" : "fatsawtooth",
+				"count" : 3,
+				"spread" : 30
+			},
+			"envelope": {
+				"attack": 0.01,
+				"decay": 0.1,
+				"sustain": 0.5,
+				"release": 0.4,
+				"attackCurve" : "exponential"
+			},
+		}).toMaster();
+
+    //var synth2 = new Tone.FatOscillator("Ab3", "sine", "square").toMaster();
+
     var synth2 = new Tone.PolySynth(6, Tone.Synth, {
 			"oscillator" : {
 				"partials" : [0, 2, 3, 4],
 			}
 		}).toMaster();
+
+    var synth2 = new Tone.PolySynth(10, Tone.DuoSynth, {
+			"oscillator" : {
+				"partials" : [0, 2, 3, 4],
+			}
+		}).toMaster();
+
     var synth3 = new Tone.Synth().toMaster();
     var synth = new Tone.Synth({
 	"oscillator" : {
@@ -162,7 +189,29 @@ var keyToNote = function keyToNote(key) {
 		"release" : 0.9,
 	}
 }).toMaster();
+
+var synth = new Tone.Synth().toMaster();
      //var code = $.ui.keyCode;
+
+
+//      var seq = new Tone.Sequence(function(time, note){
+// 	console.log(note);
+// //straight quater notes
+// }, ["C4", "E4", "G4", "A4"], "4n");
+//
+//
+// var loop = new Tone.Sequence(function(time, col){
+// 			var column = matrix1.matrix[col];
+// 			for (var i = 0; i < 4; i++){
+// 				if (column[i] === 1){
+// 					//slightly randomized velocities
+// 					var vel = Math.random() * 0.5 + 0.5;
+// 					keys.get(noteNames[i]).start(time, 0, "32n", 0, vel);
+// 				}
+// 			}
+// 		}, [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15], "16n");
+// 		Tone.Transport.start();
+
 
     document.addEventListener('keypress', (event) => {
   const keyName = event.key;
@@ -173,6 +222,7 @@ var keyToNote = function keyToNote(key) {
 //var keyboard = Interface.Keyboard();
 
 document.addEventListener('keydown', (event) => {
+
 const keyName = event.key;
  //synth2.triggerAttack("B4");
 console.log(keyToNote(keyName), "keytonote");
@@ -200,13 +250,31 @@ document.addEventListener('keyup', (event) => {
   //Release sound base on content of the li.
   socket.emit('buttonReleased', keyToNote(event.key));
 
-console.log("up! ", event.key+4);
 });
+
+// var beatOn = false;
+// document.getElementById("beat").addEventListener('mousedown', function(e){
+//   console.log('yo')
+//
+//
+// })
+// document.getElementById("beat").addEventListener('mouseup', function(e){
+//   if (beatOn == false) {
+//     seq.start();
+//     beatOn = true;
+//   }
+// })
 
 
     //attach a listener to all of the buttons
     document.querySelectorAll('li').forEach(function(button){
+
+
       button.addEventListener('mousedown', function(e){
+        console.log('yo')
+        if (e.target.textContent == "loop") {
+          console.log("ew")
+        }
         //play the note on mouse down
         synth.triggerAttack(e.target.textContent)
         //Play sound base on content of the li
@@ -223,10 +291,18 @@ console.log("up! ", event.key+4);
       })
     })
 
+
+
+  }
+
+   click(e) {
+    console.log("sowhat");
+
   }
     render() {
     return (
       <div className="component-app">
+
 
       <ul className="set">
       <li className="white b" id="B4">B4</li>
@@ -242,7 +318,10 @@ console.log("up! ", event.key+4);
       <li className="black cs"></li>
       <li className="white c" id="C4">C4</li>
     </ul>
+    <button>loop</button>
+    <input type="checkbox"  onClick={(e) => this.click(e)} name="LoopBeat" id="beat" value="beat"/>
     <input type="range" min="-10" max="10"/>
+
 
 
         <h1>Socket Test</h1>
@@ -253,7 +332,6 @@ console.log("up! ", event.key+4);
       <button >B4</button>
     </div>
 
-    <P5Wrapper sketch={sketch} />
 
 
       </div>
