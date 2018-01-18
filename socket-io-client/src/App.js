@@ -16,7 +16,7 @@ class App extends Component {
     super();
     this.state = {
       response: false,
-      endpoint: "http://localhost:4200"
+      endpoint: "http://jamsesh.dev01.oceanabo.com/socket/"
     };
   }
 

@@ -1,8 +1,12 @@
 // app.js
+
 var express = require('express');
-var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var app     = express();
+var server  = app.listen(4200);
+var io      = require('socket.io').listen(server);
+
+io.origins(['http://jamsesh.dev01.oceanabo.com']);
+
 
 app.use(express.static(__dirname + '/node_modules'));
 app.use(express.static(__dirname + '/Tone'));
@@ -38,8 +42,6 @@ io.on('connection', function(client) {
 
 
 });
-
-server.listen(4200);
 
 
 /*
